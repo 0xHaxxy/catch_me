@@ -2,20 +2,21 @@
 const c = document.getElementById("c");
 const ctx = c.getContext("2d");
 
-// ---------- Réglages ----------
-const ghost_spawn_delay = 120;       // 2 s à 60 fps : un nouveau fantôme toutes les 2 s
-const loading_ghost = 60;       // un fantôme est inoffensif pendant 1 s après son apparition
-const player_size = 32;         // taille de l'image du joueur, en pixels
-const player_radius = player_size / 2;      // rayon du joueur (collision)
-const ghost_radius = 20;      // rayon des fantômes (cercles)
+// ---------- Settings ----------
+const ghost_spawn_delay = 120;       // Unit in s
+const loading_ghost = 60;       
+const player_size = 32;         // Unit ox
+const player_radius = player_size / 2;      // (collision)
+const ghost_radius = 20;      
 
-// ---------- Images ----------
+// ---------- load Images ----------
 const player_img = new Image();
 player_img.src = "Images/player.png";
 const background_img = new Image();
 background_img.src = "Images/background.jpeg";
 
-// ---------- État du jeu ----------
+
+// ----------Variables ----------
 let mouvement_memory = []; 
 let frame = 0;
 let alive = false; 
@@ -23,7 +24,7 @@ let best = 0;
 let lastScore = null;
 const mouse = { x: 0, y: 0 };
 
-// ---------- Entrées ----------
+// ----------Input functions ----------
 function resize() 
 {
   c.width = c.clientWidth;
@@ -45,7 +46,8 @@ c.addEventListener("pointerdown", e =>
   if (!alive) { mouvement_memory = []; frame = 0; alive = true; }
 });
 
-// ---------- Dessin ----------
+
+// ----------Drawing function ----------
 function circle(x, y, color, alpha, radius = player_radius) 
 {
   ctx.globalAlpha = alpha;
@@ -80,14 +82,13 @@ function drawBackground(bg)
   if (background_img.complete && background_img.naturalWidth > 0) {
     ctx.drawImage(background_img, 0, 0, c.width, c.height);
   } else {
-    ctx.fillStyle = bg;            // couleur de secours
+    ctx.fillStyle = bg;            // just in case the original IMG doesn't load correctly
     ctx.fillRect(0, 0, c.width, c.height);
   }
 }
 
 
-// ---------- Boucle principale ----------
-function gameLoop() {
+// ---------- Boucle principale ----------function gameLoop() {
   const css = getComputedStyle(document.documentElement);
   const bg = css.getPropertyValue("--bg");
   const fg = css.getPropertyValue("--fg");
